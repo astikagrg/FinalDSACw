@@ -28,7 +28,7 @@ public class main extends JFrame {
             "<br>Enter the name of the Pipe in \"From\" and \"To\" textfield to join the two Nodes." +
             "<br>After creating all the Pipe Line, enter \"Source\" Pipe and \"Destination\" Pipe to" +
             "<br>Calculate the Shortest distance between them." +
-            "<br><br><i><b>Developed By :<font color=\"blue\"> Sangeet Shrestha</font>";
+            "<br><br><i><b>Developed By :<font color=\"blue\"> Astika Gurung</font>";
 
 
     // Adjacency matrix (used to get minimum distance and path)
