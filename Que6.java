@@ -1,38 +1,37 @@
-
-
-//importing the java hashmap class
 import java.util.HashMap;
 
 class RandomUniqueEqualizer {
-    //declaring an array of strings to store the words
+
+    // array of words
     String[] leftSide;
+    // Single righ side word
     String rightSide;
-    //declaring a hashmap to store the count of each character in the target word
+    // Hashmap to store numerical values of different letters
     HashMap<String, String> mapper = new HashMap<String, String>();
 
-    //constructor to initialize the variables
     RandomUniqueEqualizer(String[] leftSide, String rightSide) {
 
+        // assigning to the global variable
         this.leftSide = leftSide;
         this.rightSide = rightSide;
     }
 
-    //function to find the subset required to form the targeted word
     boolean processor() {
 
-        //declaring a string to store the subset
+        // converting array of words into a single string
         String checkval1 = String.join("", leftSide);
         String checkvalFinal = checkval1 + rightSide;
         // System.out.println(checkval);
-
-        //declaring a string to store the subset
+        // passing parameters into function to get unique letters and have them
+        // assigned different unique numbers
         String uniqueCheck = uniqueFinder(checkvalFinal, checkval1.charAt(checkval1.length() - 1));
 
+        // Function that returns sum of left side words
         int leftSum = leftItterSum();
 
         String rightSum = "";
 
-        //iterating through the right side of the target word
+        // Finding right-side sum
         for (int i = 0; i < rightSide.length(); i++) {
             rightSum += mapper.get("" + rightSide.charAt(i));
         }
@@ -40,46 +39,65 @@ class RandomUniqueEqualizer {
         // System.out.println(rightSum);
         // System.out.println(leftSum);
 
-        //checking if the sum of the left side is equal to the right side
+        // Check if both are same or not
         if (leftSum == Integer.parseInt(rightSum)) {
             return true;
         }
 
         return false;
+
     }
-    //function to calculate the sum of the left side of the target word
+
     int leftItterSum() {
-        //declaring a variable to store the sum of the left side
+
+        // int lastCheckIter = 0;
         int unitsItter = 0;
         String[] units = new String[leftSide.length];
         int leftTotal = 0;
 
-        //iterating through the left side of the target word
+        // if(leftSide[lastCheckIter].charAt(i) ==
+        // leftSide[lastCheckIter].charAt(leftSide[lastCheckIter].length())){
+        // unitsItter++;
+        // }
+        // itterate over left-side words letters and findout sum of all
         for (int i = 0; i < leftSide.length; i++) {
+
             units[unitsItter] = "";
+
             for (int j = 0; j < leftSide[i].length(); j++) {
 
+                // System.out.println(mapper.get("H"));
                 units[unitsItter] += mapper.get("" + leftSide[i].charAt(j));
 
             }
-            leftTotal += Integer.parseInt(units[unitsItter]);//adding the count of each character in the left side to the left total
-            unitsItter++;//incrementing the units itter
+            leftTotal += Integer.parseInt(units[unitsItter]);
+            unitsItter++;
+
         }
-        return leftTotal;
+
+        // System.out.println(units[0]);
+        // System.out.println(units[1]);
+        // System.out.println(units[2]);
+
+        // System.out.println(leftTotal);
+
+        return leftTotal;// returning lef-side sum
     }
 
-    //function to find the unique subset required to form the targeted word
     String uniqueFinder(String a, char leftend) {
 
         int len = 0;
         char[] passer = new char[a.length()];
 
-        //iterating through the target word
+        // Here, the letters are itterated over other letters and if found
+        // same, the loop is skipped, if not found, it is considered unique
+
         for (int i = 0; i < a.length(); i++) {
             boolean push = false;
-            //iterating through the target word
             for (int j = 0; j < a.length(); j++) {
                 if (i >= j) {
+                    // By following this process,
+                    // at last, the last letter is always unique
                     if (i == a.length() - 1) {
                         push = true;
                         break;
@@ -87,45 +105,51 @@ class RandomUniqueEqualizer {
                     continue;
                 }
 
-                //checking if the characters match
                 if (a.charAt(i) == a.charAt(j)) {
-                    push = false;//set the push to false
+                    push = false;
                     break;
-                }
-                //checking if the characters doesn't match
-                 else if (a.charAt(i) != a.charAt(j)) {
-                    push = true;//set the push to true
+                } else if (a.charAt(i) != a.charAt(j)) {
+                    push = true;
                 }
             }
-            //checking if the push is true
             if (push) {
-                passer[len] = a.charAt(i);//adding the character to the passer array
-                push = false;//setting the push to false
-                len++;//incrementing the len
+                passer[len] = a.charAt(i);
+                push = false;
+                len++;
             }
         }
 
         String combined = "";
-        int itter = 0;
+        // int itter = 0;
 
-        String[] leftRightSum = new String[2];
+        // String[] leftRightSum = new String[2];
 
-        //iterating through the passer array
+        // passing elements in its tightly fitting
+        // array, where size is same as number of elements
         for (int i = 0; i < len; i++) {
             combined += passer[i];
             mapper.put("" + passer[i], "" + i);
+            // if (passer[i] == leftend) {
+            // itter++;
+            // }
+            // leftRightSum[itter] += mapper.get("" + passer[i]);
 
         }
+
+        // System.out.println(combined);
+
         return combined;
+        // return leftRightSum;
+
     }
 
-    //Driver Code
     public static void main(String[] args) {
-        //Storing the words in an array
-        String[] leftInput = {"THIS","IS","TOO"};
 
-        //prinring the output
-        System.out.println(new RandomUniqueEqualizer(leftInput, "FUNNY").processor());
+        // Giving the left-side words
+        String[] leftInput = { "HE", "HA", "NO" };
+
+        // calling processor function to compare leftsum and rightsum
+        System.out.println(new RandomUniqueEqualizer(leftInput, "JR").processor());
     }
 
 }
