@@ -1,99 +1,131 @@
 
-// import weekEighty.KeyLock.QueueExample.Node;
 
-// public class KeyLock {
+//importing the java hashmap class
+import java.util.HashMap;
 
-//     public static class QueueExample {
-//         public static class Node {
-//             int x;
-//             int y;
-//             int step;
+class RandomUniqueEqualizer {
+    //declaring an array of strings to store the words
+    String[] leftSide;
+    String rightSide;
+    //declaring a hashmap to store the count of each character in the target word
+    HashMap<String, String> mapper = new HashMap<String, String>();
 
-//             Node(int x, int y) {
-//                 this.x = x;
-//                 this.y = y;
+    //constructor to initialize the variables
+    RandomUniqueEqualizer(String[] leftSide, String rightSide) {
 
-//             }
-//         }
+        this.leftSide = leftSide;
+        this.rightSide = rightSide;
+    }
 
-//         Node queues[];
-//         int front = -1;
-//         int rear = -1;
-//         int size;
+    //function to find the subset required to form the targeted word
+    boolean processor() {
 
-//         QueueExample(int size) {
-//             this.size = size;
-//             queues = new Node[size];
-//         }
+        //declaring a string to store the subset
+        String checkval1 = String.join("", leftSide);
+        String checkvalFinal = checkval1 + rightSide;
+        // System.out.println(checkval);
 
-//         public boolean enqueue(Node node) {
-//             if (isFull()) {
-//                 System.out.println("queue overflow");
-//                 return false;
-//             }
-//             if (front == -1) {
-//                 front = 0;
-//             }
-//             queues[++rear] = node;
-//             return true;
-//         }
+        //declaring a string to store the subset
+        String uniqueCheck = uniqueFinder(checkvalFinal, checkval1.charAt(checkval1.length() - 1));
 
-//         public boolean isFull() {
-//             return rear == size - 1;
-//         }
+        int leftSum = leftItterSum();
 
-//         public Node dequeue() {
-//             if (isEmpty()) {
-//                 System.out.println("queue empty");
-//                 return new Node(-1, -1);
-//             }
-//             int val = front;
-//             if (front == rear) {
-//                 front = rear = -1;
-//             } else {
-//                 front++;
-//             }
-//             return queues[val];
-//         }
+        String rightSum = "";
 
-//         public boolean isEmpty() {
-//             return front == -1;
-//         }
-//     }
+        //iterating through the right side of the target word
+        for (int i = 0; i < rightSide.length(); i++) {
+            rightSum += mapper.get("" + rightSide.charAt(i));
+        }
 
-//     int mapx;
-//     int mapy;
-//     String[][] map;
-//     int[] movex = { 1, -1, 0, 0 };
-//     int[] movey = { 0, 0, 1, -1 };
+        // System.out.println(rightSum);
+        // System.out.println(leftSum);
 
-//     KeyLock(String[] map, int mapx, int mapy) {
+        //checking if the sum of the left side is equal to the right side
+        if (leftSum == Integer.parseInt(rightSum)) {
+            return true;
+        }
 
-//     }
+        return false;
+    }
+    //function to calculate the sum of the left side of the target word
+    int leftItterSum() {
+        //declaring a variable to store the sum of the left side
+        int unitsItter = 0;
+        String[] units = new String[leftSide.length];
+        int leftTotal = 0;
 
-//     int pathfinder() {
-//         String locks = "ABCD";
-//         String keys = "abcd";
-//         int keys_found = 0;
-//         Node rootnode = new Node(0, 0);
-//         boolean visited[][] = new boolean[mapx][mapy];
-//         rootnode.step = 0;
-//         QueueExample travel = new QueueExample(mapx * mapy);
-//         travel.enqueue(rootnode);
-//         char[] keyfound = new char[4];
-//         int key_index = 0;
+        //iterating through the left side of the target word
+        for (int i = 0; i < leftSide.length; i++) {
+            units[unitsItter] = "";
+            for (int j = 0; j < leftSide[i].length(); j++) {
 
-//         while (!travel.isEmpty()) {
+                units[unitsItter] += mapper.get("" + leftSide[i].charAt(j));
 
-//         }
-//         System.out.println("Couldn't complete mission");
-//         return -1;
+            }
+            leftTotal += Integer.parseInt(units[unitsItter]);//adding the count of each character in the left side to the left total
+            unitsItter++;//incrementing the units itter
+        }
+        return leftTotal;
+    }
 
-//     }
+    //function to find the unique subset required to form the targeted word
+    String uniqueFinder(String a, char leftend) {
 
-//     public static void main(String[] args) {
-//         String[] map = { "@*a*#", "###*#", "b*A*B" };
-//         KeyLock obj = new KeyLock(map, 3, 5);
-//         System.out.println(obj.pathfinder());
-//     }
-// }
+        int len = 0;
+        char[] passer = new char[a.length()];
+
+        //iterating through the target word
+        for (int i = 0; i < a.length(); i++) {
+            boolean push = false;
+            //iterating through the target word
+            for (int j = 0; j < a.length(); j++) {
+                if (i >= j) {
+                    if (i == a.length() - 1) {
+                        push = true;
+                        break;
+                    }
+                    continue;
+                }
+
+                //checking if the characters match
+                if (a.charAt(i) == a.charAt(j)) {
+                    push = false;//set the push to false
+                    break;
+                }
+                //checking if the characters doesn't match
+                 else if (a.charAt(i) != a.charAt(j)) {
+                    push = true;//set the push to true
+                }
+            }
+            //checking if the push is true
+            if (push) {
+                passer[len] = a.charAt(i);//adding the character to the passer array
+                push = false;//setting the push to false
+                len++;//incrementing the len
+            }
+        }
+
+        String combined = "";
+        int itter = 0;
+
+        String[] leftRightSum = new String[2];
+
+        //iterating through the passer array
+        for (int i = 0; i < len; i++) {
+            combined += passer[i];
+            mapper.put("" + passer[i], "" + i);
+
+        }
+        return combined;
+    }
+
+    //Driver Code
+    public static void main(String[] args) {
+        //Storing the words in an array
+        String[] leftInput = {"THIS","IS","TOO"};
+
+        //prinring the output
+        System.out.println(new RandomUniqueEqualizer(leftInput, "FUNNY").processor());
+    }
+
+}
